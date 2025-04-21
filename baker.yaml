@@ -1,0 +1,113 @@
+schemaVersion: v1
+
+questions:
+  project_name:
+    type: str
+    default: "myapp"
+    help: Please enter the name of your project
+
+  project_author:
+    type: str
+    help: "Please enter the author's name for {{project_name}}"
+
+  project_slug:
+    type: str
+    help: Please enter the project slug (or press Enter to use the default)
+    default: "{{ project_name|lower|replace(' ', '_') }}"
+
+  project_type:
+    type: str
+    help: What type of web project are you creating?
+    default: "fullstack"
+    choices:
+      - fullstack
+      - backend
+      - frontend
+
+  backend_framework:
+    type: str
+    help: What framework will you be using for the backend?
+    default: "axum"
+    ask_if: "project_type == 'fullstack' or project_type == 'backend'"
+    choices:
+      - axum
+      - actix-web
+
+    frontend_framework:
+      type: str
+      help: What framework will you be using for the frontend?
+      ask_if: "project_type == 'fullstack' or project_type == 'frontend'"
+      default: "react"
+      choices:
+      - react
+      - angular
+
+  authentication:
+    type: str
+    help: Which type of authentication would you like to use?
+    default: "jwt"
+    choices:
+      - jwt
+      - oidc
+
+  entities:
+    type: json
+    help: Define your entities as JSON Schemas
+    schema: |
+      {
+        "type": "object",
+        "additionalProperties": {
+          "type": "object",
+          "required": ["type", "properties"],
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "object"
+            },
+            "properties": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "type": { "type": "string" }
+                },
+                "required": ["type"]
+              }
+            },
+            "required": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    default: |
+      {
+        "product": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          },
+          "required": ["id", "name"]
+        },
+        "user": {
+          "type": "object",
+          "properties": {
+            "id": { "type": "integer" },
+            "name": { "type": "string" },
+            "email": { "type": "string", "format": "email" }
+          },
+          "required": ["id", "name", "email"]
+        }
+      }
+
+  debug:
+    type: str
+    help: "{{debug()}}"
+
+  use_tests:
+    type: bool
+    help: Will your project include tests?
+    default: true

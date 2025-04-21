@@ -1,0 +1,30 @@
+{# change app_name in all files #}
+{% import "_macros.jinja" as macros -%}
+{% set app_name= values.application.name %}
+{% if app_name -%}
+message: "Set app name to {{ app_name }}"
+injections:
+- into: {{ values.outputFolder }}/Cargo.toml
+  replace: "app_name"
+  content: "{{ app_name }}"
+- into: {{ values.outputFolder }}/Cargo.lock
+  replace: "app_name"
+  content: "{{ app_name }}"
+- into: {{ values.outputFolder }}/Dockerfile
+  replace: "app_name"
+  content: "{{ app_name }}"
+- into: {{ values.outputFolder }}/.env
+  replace: "app_name"
+  content: "{{ app_name }}"
+- into: {{ values.outputFolder }}/.env
+  replace: "app_name"
+  content: "{{ app_name }}"
+- into: {{ values.outputFolder }}/.env
+  append: true
+  content: "POSTGRES_PASSWORD={{ fake('Password') }}"
+- into: {{ values.outputFolder }}/.env
+  append: true
+  content: "JWT_SECRET={{ macros.generate_jwt_secret_key() | trim }}"
+---
+// Add tenant_id to the entity
+{% endif -%}
