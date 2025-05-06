@@ -1,0 +1,23 @@
+{
+    "name": "Loco Template DevContainer",
+    "image": "mcr.microsoft.com/devcontainers/rust:1-ubuntu",
+    "features": {
+      "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+    },
+    "customizations": {
+      "vscode": {
+        "extensions": [
+          "ms-vscode.cpptools",
+          "serayuzgur.crates",
+          "tamasfe.even-better-toml",
+          "streetsidesoftware.code-spell-checker"
+        ]
+      }
+    },
+    "postCreateCommand": "apt-get update && apt-get install -y python3-pip && pip install pipx && pipx install copier",
+    "mounts": [
+      "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached"
+    ],
+    "workspaceFolder": "/workspace",
+    "remoteUser": "vscode"
+}

@@ -1,7 +1,0 @@
-pub mod auth;
-pub mod utils;
-{% for entity_name, entity in entities | items -%}
-{% if entity.properties -%}
-pub mod {{ entity_name }};
-{% endif -%}
-{% endfor -%}
